@@ -1,0 +1,100 @@
+/* Google Fonts locally */
+@font-face {
+    font-family: 'Ubuntu Mono';
+    src: url('UbuntuMono-Regular.woff2') format('woff2');
+}
+
+/* Styles */
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Ubuntu Mono', monospace;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+#clock {
+    font-size: 24vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#clock.no-seconds {
+    font-size: 39vw;
+}
+
+#clock.no-seconds #time-format.am-pm-active {
+    top: 9vw;
+    font-size: 8.5vw;
+}
+
+#clock.no-seconds #time-format.am-pm-active span {
+    padding: 2.5vw 0.8vw;
+}
+
+#clock.no-seconds > span#colon-seconds,
+#clock.no-seconds > span#seconds {
+    display: none;
+}
+
+.colon {
+    padding-bottom: 4vw;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+#menu {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: absolute;
+    margin: auto;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    transition: all 0.2s ease;
+}
+
+#menu > span {
+    display: block;
+    font-size: 10vw;
+    cursor: pointer;
+    text-shadow: 0 0 2vh currentColor;
+    transition: text-shadow 0.5s, font-size 0.2s, margin 0.2s;
+}
+
+#menu > span:hover {
+    font-size: 12vw;
+    margin: 1vw 0;
+    text-shadow: 0 0 5vh currentColor;
+}
+
+#time-format {
+    display: none;
+}
+
+#time-format.am-pm-active {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 6vw;
+    font-size: 5vw;
+    transition: top 0.2s ease, font-size 0.2s ease, display 0s;
+}
+
+#time-format.am-pm-active span {
+    padding: 1.5vw 0.5vw;
+}
