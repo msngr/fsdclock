@@ -1,270 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        /* Set your own color of background (background-color) and color of numbers (color) */
-        .theme-light {
-            background-color: white;
-            color: black;
-        }
-
-        .theme-dark {
-            background-color: black;
-            color: white;
-        }
-
-        /* Styles */
-        html {
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Ubuntu Mono', monospace;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        #clock {
-            font-size: 22vw;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        #clock.no-seconds {
-            font-size: 36vw;
-        }
-
-        #clock.no-seconds #time-format.am-pm-active {
-            top: 9vw;
-            font-size: 8.5vw;
-        }
-
-        #clock.no-seconds #time-format.am-pm-active span {
-            padding: 2.5vw 0.8vw;
-        }
-
-        #clock.no-seconds>span#colon-seconds,
-        #clock.no-seconds>span#seconds {
-            display: none;
-        }
-
-        .colon {
-            padding-bottom: 4vw;
-            position: relative;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #menu {
-            display: none;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            position: absolute;
-            margin: auto;
-            justify-content: space-around;
-            align-items: center;
-            flex-direction: column;
-            transition: all 0.2s ease;
-        }
-
-        #menu>span {
-            display: block;
-            font-size: 10vw;
-            cursor: pointer;
-            text-shadow: 0 0 2vh currentColor;
-            transition: text-shadow 0.5s, font-size 0.2s, margin 0.2s;
-        }
-
-        #menu>span:hover {
-            font-size: 12vw;
-            margin: 1vw 0;
-            text-shadow: 0 0 5vh currentColor;
-        }
-
-        #time-format {
-            display: none;
-        }
-
-        #time-format.am-pm-active {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            top: 6vw;
-            font-size: 5vw;
-            transition: top 0.2s ease, font-size 0.2s ease, display 0s;
-        }
-
-        #time-format.am-pm-active span {
-            padding: 1.5vw 0.5vw;
-        }
-    </style>
-
-    <title>Fullscreen Digital Clock</title>
-</head>
-
-<body class="theme-light">
-    <div id="clock" onclick="openMenu()">
-        <span data-hours></span>
-        <span class="colon">:
-            <div id="time-format">
-                <span data-amPM></span>
-                <span>m</span>
-            </div>
-        </span>
-        <span data-minutes></span>
-        <span id="colon-seconds" class="colon">:</span>
-        <span id="seconds" data-seconds></span>
-    </div>
-    <div id="menu" onclick="closeMenu()">
-        <span onclick="formatHours()" data-formatHours></span>
-        <span onclick="switchTheme()" data-switchTheme>switchTheme</span>
-        <span onclick="toggleSeconds()" data-toggleSeconds></span>
-    </div>
-
-    <script>loadLocalStorage()
-        showTime()
-        refreshTime()
-
-        function loadLocalStorage() {
-            // load time-format from localStorage
-            if (localStorage.getItem('fsdcTimeFormat')) {
-                formatHours()
-            } else {
-                document.querySelector('[data-formatHours]').innerText = '12hFormat'
+        <style>
+            /* Set your own color of background (background-color) and color of numbers (color) */
+            .theme-light {
+                background-color: white;
+                color: black;
             }
-            // load seconds-setting from localStorage
-            if (localStorage.getItem('fsdcSeconds')) {
-                document.getElementById('clock').classList.add('no-seconds')
-                document.querySelector('[data-toggleSeconds]').innerText = 'showSeconds'
-            } else {
-                document.querySelector('[data-toggleSeconds]').innerText = 'hideSeconds'
-            }
-            // load theme from localStorage
-            if (localStorage.getItem('fsdcTheme')) {
-                switchTheme()
-            }
-        }
 
-        function showTime() {
-            // get current time
-            const time = new Date()
-            // get hours, minutes, seconds in 2 digits
-            const hours = time.getHours().toString().padStart(2, '0')
-            const minutes = time.getMinutes().toString().padStart(2, '0')
-            const seconds = time.getSeconds().toString().padStart(2, '0')
-            // show hours, minutes, seconds in span elements
-            document.querySelector('[data-hours]').innerHTML = hours
-            document.querySelector('[data-minutes]').innerHTML = minutes
-            document.querySelector('[data-seconds]').innerHTML = seconds
-            // switch to 12 hour format if chosen
-            const timeFormat = document.getElementById('time-format')
-            if (timeFormat.classList.contains('am-pm-active')) {
+            .theme-dark {
+                background-color: black;
+                color: white;
+            }
+
+            /* Styles */
+            html {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: 'Ubuntu Mono', monospace;
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                transition: all 0.2s ease;
+            }
+
+            #clock {
+                font-size: 22vw;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            #clock.no-seconds {
+                font-size: 36vw;
+            }
+
+            #clock.no-seconds #time-format.am-pm-active {
+                top: 9vw;
+                font-size: 8.5vw;
+            }
+
+            #clock.no-seconds #time-format.am-pm-active span {
+                padding: 2.5vw 0.8vw;
+            }
+
+            #clock.no-seconds > span#colon-seconds,
+            #clock.no-seconds > span#seconds {
+                display: none;
+            }
+
+            .colon {
+                padding-bottom: 4vw;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #menu {
+                display: none;
+                height: 100vh;
+                width: 100vw;
+                overflow: hidden;
+                position: absolute;
+                margin: auto;
+                justify-content: space-around;
+                align-items: center;
+                flex-direction: column;
+                transition: all 0.2s ease;
+            }
+
+            #menu > span {
+                display: block;
+                font-size: 10vw;
+                cursor: pointer;
+                text-shadow: 0 0 2vh currentColor;
+                transition: text-shadow 0.5s, font-size 0.2s, margin 0.2s;
+            }
+
+            #menu > span:hover {
+                font-size: 12vw;
+                margin: 1vw 0;
+                text-shadow: 0 0 5vh currentColor;
+            }
+
+            #time-format {
+                display: none;
+            }
+
+            #time-format.am-pm-active {
+                position: absolute;
+                display: flex;
+                flex-direction: column;
+                top: 6vw;
+                font-size: 5vw;
+                transition: top 0.2s ease, font-size 0.2s ease, display 0s;
+            }
+
+            #time-format.am-pm-active span {
+                padding: 1.5vw 0.5vw;
+            }
+        </style>
+
+        <title>Fullscreen Digital Clock</title>
+    </head>
+
+    <body class="theme-light">
+        <div id="clock">
+            <span data-hours></span>
+            <span class="colon"
+                >:
+                <div id="time-format">
+                    <span data-amPM></span>
+                    <span>m</span>
+                </div>
+            </span>
+            <span data-minutes></span>
+            <span id="colon-seconds" class="colon">:</span>
+            <span id="seconds" data-seconds></span>
+        </div>
+        <div id="menu">
+            <span data-formatHours></span>
+            <span data-switchTheme>switchTheme</span>
+            <span data-toggleSeconds></span>
+        </div>
+
+        <script>
+            // app functions
+
+            loadLocalStorage()
+            showTime()
+            refreshTime()
+
+            // onclick event listeners
+
+            document
+                .getElementById('clock')
+                .addEventListener('click', function () {
+                    openMenu()
+                })
+
+            document
+                .getElementById('menu')
+                .addEventListener('click', function () {
+                    closeMenu()
+                })
+
+            document
+                .querySelector('[data-formatHours]')
+                .addEventListener('click', function () {
+                    formatHours()
+                })
+
+            document
+                .querySelector('[data-switchTheme]')
+                .addEventListener('click', function () {
+                    switchTheme()
+                })
+
+            document
+                .querySelector('[data-toggleSeconds]')
+                .addEventListener('click', function () {
+                    toggleSeconds()
+                })
+
+            // function definitions
+
+            function loadLocalStorage() {
+                // load time-format from localStorage
+                if (localStorage.getItem('fsdcTimeFormat')) {
+                    formatHours()
+                } else {
+                    document.querySelector('[data-formatHours]').innerText =
+                        '12hFormat'
+                }
+                // load seconds-setting from localStorage
+                if (localStorage.getItem('fsdcSeconds')) {
+                    document.getElementById('clock').classList.add('no-seconds')
+                    document.querySelector('[data-toggleSeconds]').innerText =
+                        'showSeconds'
+                } else {
+                    document.querySelector('[data-toggleSeconds]').innerText =
+                        'hideSeconds'
+                }
+                // load theme from localStorage
+                if (localStorage.getItem('fsdcTheme')) {
+                    switchTheme()
+                }
+            }
+
+            function showTime() {
+                // get current time
+                const time = new Date()
+                // get hours, minutes, seconds in 2 digits
+                const hours = time.getHours().toString().padStart(2, '0')
+                const minutes = time.getMinutes().toString().padStart(2, '0')
+                const seconds = time.getSeconds().toString().padStart(2, '0')
+                // show hours, minutes, seconds in span elements
+                document.querySelector('[data-hours]').innerHTML = hours
+                document.querySelector('[data-minutes]').innerHTML = minutes
+                document.querySelector('[data-seconds]').innerHTML = seconds
+                // switch to 12 hour format if chosen
+                const timeFormat = document.getElementById('time-format')
+                if (timeFormat.classList.contains('am-pm-active')) {
+                    switchFormat()
+                }
+            }
+
+            function refreshTime() {
+                // refresh time every second
+                setInterval(showTime, 1000)
+            }
+
+            // open menu when clicking on time div
+            function openMenu() {
+                const body = document.body
+                const menu = document.getElementById('menu')
+                const clock = document.getElementById('clock')
+                menu.style.display = 'flex'
+                clock.style.filter = 'blur(4px)'
+                if (body.classList.contains('theme-dark')) {
+                    clock.style.color = 'darkgrey'
+                } else {
+                    clock.style.color = 'lightgrey'
+                }
+            }
+
+            // close menu when clicking on menu div
+            function closeMenu() {
+                const menu = document.getElementById('menu')
+                const clock = document.getElementById('clock')
+                menu.style.display = 'none'
+                clock.style.filter = 'blur(0px)'
+                clock.style.color = ''
+            }
+
+            // show/hide am/pm
+            function formatHours() {
+                const timeFormat = document.getElementById('time-format')
+                const formatHours = document.querySelector('[data-formatHours]')
+                timeFormat.classList.toggle('am-pm-active')
+                // save in local storage if class am-pm-active is applied to timeFormat
+                if (timeFormat.classList.contains('am-pm-active')) {
+                    formatHours.innerText = '24hFormat'
+                    localStorage.setItem('fsdcTimeFormat', 'am-pm-active')
+                } else {
+                    formatHours.innerText = '12hFormat'
+                    localStorage.removeItem('fsdcTimeFormat')
+                }
                 switchFormat()
             }
-        }
 
-        function refreshTime() {
-            // refresh time every second
-            setInterval(showTime, 1000)
-        }
-
-        // open menu when clicking on time div
-        function openMenu() {
-            const body = document.body
-            const menu = document.getElementById('menu')
-            const clock = document.getElementById('clock')
-            menu.style.display = 'flex'
-            clock.style.filter = 'blur(4px)'
-            if (body.classList.contains('theme-dark')) {
-                clock.style.color = 'darkgrey'
-            } else {
-                clock.style.color = 'lightgrey'
+            function switchFormat() {
+                const hours = document.querySelector('[data-hours]')
+                const amPM = document.querySelector('[data-amPM]')
+                if (hours.innerHTML > '12') {
+                    hours.innerHTML = hours.innerHTML - 12
+                    hours.innerHTML = hours.innerHTML.padStart(2, '0')
+                    amPM.innerHTML = 'p'
+                } else {
+                    amPM.innerHTML = 'a'
+                    // instant refresh hours
+                    hours.innerHTML = new Date()
+                        .getHours()
+                        .toString()
+                        .padStart(2, '0')
+                }
             }
-        }
 
-        // close menu when clicking on menu div
-        function closeMenu() {
-            const menu = document.getElementById('menu')
-            const clock = document.getElementById('clock')
-            menu.style.display = 'none'
-            clock.style.filter = 'blur(0px)'
-            clock.style.color = ''
-        }
-
-        // show/hide am/pm
-        function formatHours() {
-            const timeFormat = document.getElementById('time-format')
-            const formatHours = document.querySelector('[data-formatHours]')
-            timeFormat.classList.toggle('am-pm-active')
-            // save in local storage if class am-pm-active is applied to timeFormat
-            if (timeFormat.classList.contains('am-pm-active')) {
-                formatHours.innerText = '24hFormat'
-                localStorage.setItem('fsdcTimeFormat', 'am-pm-active')
-            } else {
-                formatHours.innerText = '12hFormat'
-                localStorage.removeItem('fsdcTimeFormat')
+            // switch theme when clicking on switchTheme span
+            function switchTheme() {
+                const body = document.body
+                if (body.classList.contains('theme-dark')) {
+                    body.classList.remove('theme-dark')
+                    body.classList.add('theme-light')
+                    localStorage.removeItem('fsdcTheme')
+                } else {
+                    body.classList.remove('theme-light')
+                    body.classList.add('theme-dark')
+                    localStorage.setItem('fsdcTheme', 'theme-dark')
+                }
             }
-            switchFormat()
-        }
 
-        function switchFormat() {
-            const hours = document.querySelector('[data-hours]')
-            const amPM = document.querySelector('[data-amPM]')
-            if (hours.innerHTML > '12') {
-                hours.innerHTML = hours.innerHTML - 12
-                hours.innerHTML = hours.innerHTML.padStart(2, '0')
-                amPM.innerHTML = 'p'
-            } else {
-                amPM.innerHTML = 'a'
-                // instant refresh hours
-                hours.innerHTML = new Date().getHours().toString().padStart(2, '0')
+            // show/hide seconds
+            function toggleSeconds() {
+                const spanToggleSeconds = document.querySelector(
+                    '[data-toggleSeconds]'
+                )
+                clock.classList.toggle('no-seconds')
+                spanToggleSeconds.innerText === 'hideSeconds'
+                    ? (spanToggleSeconds.innerText = 'showSeconds')
+                    : (spanToggleSeconds.innerText = 'hideSeconds')
+                if (clock.classList.contains('no-seconds')) {
+                    localStorage.setItem('fsdcSeconds', 'no-seconds')
+                } else {
+                    localStorage.removeItem('fsdcSeconds')
+                }
             }
-        }
-
-        // switch theme when clicking on switchTheme span
-        function switchTheme() {
-            const body = document.body
-            if (body.classList.contains('theme-dark')) {
-                body.classList.remove('theme-dark')
-                body.classList.add('theme-light')
-                localStorage.removeItem('fsdcTheme')
-            } else {
-                body.classList.remove('theme-light')
-                body.classList.add('theme-dark')
-                localStorage.setItem('fsdcTheme', 'theme-dark')
-            }
-        }
-
-        // show/hide seconds
-        function toggleSeconds() {
-            const spanToggleSeconds = document.querySelector('[data-toggleSeconds]')
-            clock.classList.toggle('no-seconds')
-            spanToggleSeconds.innerText === 'hideSeconds'
-                ? (spanToggleSeconds.innerText = 'showSeconds')
-                : (spanToggleSeconds.innerText = 'hideSeconds')
-            if (clock.classList.contains('no-seconds')) {
-                localStorage.setItem('fsdcSeconds', 'no-seconds')
-            } else {
-                localStorage.removeItem('fsdcSeconds')
-            }
-        }
-    </script>
-
-</body>
-
+        </script>
+    </body>
 </html>

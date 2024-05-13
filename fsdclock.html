@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="color-config.css" />
+        <script src="script.js" defer></script>
+        <title>Fullscreen Digital Clock</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="color-config.css">
-    <script src="script.js" defer></script>
-    <title>Fullscreen Digital Clock</title>
-</head>
-
-<body class="theme-light">
-    <div id="clock" onclick="openMenu()">
-        <span data-hours></span>
-        <span class="colon">:
-            <div id="time-format">
-                <span data-amPM></span>
-                <span>m</span>
-            </div>
-        </span>
-        <span data-minutes></span>
-        <span id="colon-seconds" class="colon">:</span>
-        <span id="seconds" data-seconds></span>
-    </div>
-    <div id="menu" onclick="closeMenu()">
-        <span onclick="formatHours()" data-formatHours></span>
-        <span onclick="switchTheme()" data-switchTheme>switchTheme</span>
-        <span onclick="toggleSeconds()" data-toggleSeconds></span>
-    </div>
-</body>
-
+    <body class="theme-light">
+        <div id="clock">
+            <span data-hours></span>
+            <span class="colon"
+                >:
+                <div id="time-format">
+                    <span data-amPM></span>
+                    <span>m</span>
+                </div>
+            </span>
+            <span data-minutes></span>
+            <span id="colon-seconds" class="colon">:</span>
+            <span id="seconds" data-seconds></span>
+        </div>
+        <div id="menu">
+            <span data-formatHours></span>
+            <span data-switchTheme>switchTheme</span>
+            <span data-toggleSeconds></span>
+        </div>
+    </body>
 </html>

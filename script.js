@@ -1,6 +1,38 @@
+// app functions
+
 loadLocalStorage()
 showTime()
 refreshTime()
+
+// onclick event listeners
+
+document.getElementById('clock').addEventListener('click', function () {
+    openMenu()
+})
+
+document.getElementById('menu').addEventListener('click', function () {
+    closeMenu()
+})
+
+document
+    .querySelector('[data-formatHours]')
+    .addEventListener('click', function () {
+        formatHours()
+    })
+
+document
+    .querySelector('[data-switchTheme]')
+    .addEventListener('click', function () {
+        switchTheme()
+    })
+
+document
+    .querySelector('[data-toggleSeconds]')
+    .addEventListener('click', function () {
+        toggleSeconds()
+    })
+
+// function definitions
 
 function loadLocalStorage() {
     // load time-format from localStorage
