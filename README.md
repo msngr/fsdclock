@@ -30,7 +30,7 @@
 
 1. To try it out click on one image above or visit fsdclock.w3bdev.de
 
-2. To use it locally and make some adjustments, download it from fsdclock.w3bdev.de/download/fsdclock.zip
+2. To use it locally and make some adjustments, download it from [https://github.com/msngr/fsdclock/blob/main/downloads/fsdclock.zip](https://github.com/msngr/fsdclock/blob/main/downloads/fsdclock.zip)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
